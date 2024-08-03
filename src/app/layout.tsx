@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavigationBar from "@/components/navigation-bar/NavigationBar";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,10 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={cn("pt-14", inter.className)}>
-        <NavigationBar />
-        {children}
-      </body>
+      <body className={cn(inter.className)}>{children}</body>
     </html>
   );
 }

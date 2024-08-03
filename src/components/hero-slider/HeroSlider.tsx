@@ -48,6 +48,7 @@ export default function HeroSlider(props: IHeroSliderProps) {
               height={1100}
               width={1000}
               src={slide.image}
+              priority
             />
           </div>
         </SwiperSlide>
@@ -62,23 +63,18 @@ const slides = [
     title: "Slide 1",
     image: "/hero-slider/slider-1.jpg",
   },
-  //   {
-  //     id: 2,
-  //     title: "Slide 2",
-  //     image: "/hero-slider/slider-2.jpg",
-  //   },
   {
-    id: 3,
+    id: 2,
     title: "Slide 3",
     image: "/hero-slider/slider-3.jpg",
   },
   {
-    id: 4,
+    id: 3,
     title: "Slide 4",
     image: "/hero-slider/slider-4.jpg",
   },
   {
-    id: 5,
+    id: 4,
     title: "Slide 5",
     image: "/hero-slider/slider-5.jpg",
   },
