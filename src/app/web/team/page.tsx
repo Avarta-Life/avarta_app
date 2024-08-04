@@ -30,13 +30,12 @@ export default function Team(props: ITeamProps) {
         </div>
         <div className="w-full lg:w-1/2">
           <div className="w-full">
-            <iframe
-              className="w-full h-[360px] shadow-sm"
-              frameBorder="0"
-              src="https://www.youtube.com/watch?v=AcP7PBKj52w"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen={true}
-            />
+            <iframe 
+            className="w-full h-[360px] shadow-sm" 
+            src="https://www.youtube.com/embed/AcP7PBKj52w?si=kNogc_bejgRKerVz" 
+            title="YouTube video player" 
+            // frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
           </div>
         </div>
       </div>
