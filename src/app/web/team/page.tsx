@@ -33,7 +33,7 @@ export default function Team(props: ITeamProps) {
             <iframe
               className="w-full h-[360px] shadow-sm"
               frameBorder="0"
-              src="https://www.youtube.com/embed/HMAP8RTHM7s"
+              src="https://www.youtube.com/watch?v=AcP7PBKj52w"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen={true}
             />
@@ -163,7 +163,7 @@ const team = [
     title: "Pavan Rayabagi",
     desig: "LLM Ops Engineer",
     email: "pavanrayabagi1@gmail.com",
-    linkedin: "",
+    linkedin: "www.linkedin.com/in/pavan731",
     image: "/assets/team/pavan-rayabagi.png",
   },
   {
