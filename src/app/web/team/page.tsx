@@ -160,7 +160,7 @@ const team = [
 
   {
     title: "Pavan Rayabagi",
-    desig: "LLM Ops Engineer",
+    desig: "Frontend & DevOps Engineer",
     email: "pavanrayabagi1@gmail.com",
     linkedin: "www.linkedin.com/in/pavan731",
     image: "/assets/team/pavan-rayabagi.png",
@@ -177,7 +177,7 @@ const team = [
     desig: "Graphic Designer & Video Editor",
     email: "nithinps620@gmail.com",
     linkedin: "http://www.linkedin.com/in/nithinps620",
-    image: "/assets/team/nithin.png",
+    image: "/assets/team/nithin1.png",
   },
   {
     title: "Samruddha",
