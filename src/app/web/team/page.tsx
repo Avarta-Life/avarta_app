@@ -96,7 +96,7 @@ export default function Team(props: ITeamProps) {
 const team = [
   {
     title: "PN Chandra Ramu",
-    desig: "Founder and CEO",
+    desig: "Founder, CEO & Principal GenAI Scientist",
     email: "savinaykumar@outlook.com",
     linkedin: "http://www.linkedin.com/in/chandraai/",
     image: "/assets/team/chandra.png",
