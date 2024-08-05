@@ -29,7 +29,7 @@ pipeline{
             steps{
                 script{
                 sh "git clone https://github.com/Avarta-Life/avarta_app.git"
-                sh "docker build  --no-cache  -t image_frontend:latest  -f avarta_app/Dockerfile ."
+                sh "cd avarta_app && docker build  --no-cache  -t image_frontend:latest ."
             }
         }
         }
