@@ -124,7 +124,7 @@ const team = [
   },
   {
     title: "Abhishek Kesare",
-    desig: "Lead LLM Ops",
+    desig: "Lead Platform Engineer & ML/LLMOps Engineer",
     email: "abhikesare9@gmail.com",
     linkedin: "http://Linkedin.com/in/abhishek-kesare",
     image: "/assets/team/abhishek.png",
