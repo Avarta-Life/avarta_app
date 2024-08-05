@@ -20,13 +20,13 @@ export default function Home(props: IHomeProps) {
               <div className="w-full text-center">
                 <h1
                   className={cn(
-                    "text-6xl text-white font-semibold leading-[5rem] p-2"
+                    "text-5xl lg:text-6xl text-white font-semibold leading-[5rem] p-2"
                   )}
                 >
                   Start{" "}
                   <span
                     className={cn(
-                      "bg-white text-primary px-4 py-2 font-semibold rounded-md "
+                      "bg-white text-primary text-4xl lg:text-6xl px-4 py-2 font-semibold rounded-md "
                     )}
                   >
                     RECYCLING
