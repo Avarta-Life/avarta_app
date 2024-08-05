@@ -61,21 +61,21 @@ const slides = [
   {
     id: 1,
     title: "Slide 1",
-    image: "/hero-slider/slider-1.jpg",
+    image: "/assets/hero-slider/slider-1.jpg",
   },
   {
     id: 2,
     title: "Slide 3",
-    image: "/hero-slider/slider-3.jpg",
+    image: "/assets/hero-slider/slider-3.jpg",
   },
   {
     id: 3,
     title: "Slide 4",
-    image: "/hero-slider/slider-4.jpg",
+    image: "/assets/hero-slider/slider-4.jpg",
   },
   {
     id: 4,
     title: "Slide 5",
-    image: "/hero-slider/slider-5.jpg",
+    image: "/assets/hero-slider/slider-5.jpg",
   },
 ];

@@ -4,6 +4,6 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="max-w-screen-sm h-screen mx-auto border">{children}</div>
+    <div className="max-w-screen-sm h-screen mx-auto relative">{children}</div>
   );
 }
