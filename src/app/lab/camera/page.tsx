@@ -5,20 +5,20 @@ import {
   ArrowLeftIcon,
   CheckIcon,
   CircleIcon,
-  FocusIcon,
-  FullscreenIcon,
-  ImagesIcon,
   RefreshCcw,
   XIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 import Webcam from "react-webcam";
-import { useRouter } from "next/navigation";
+import { ImageContext } from "@/context/ImageContext";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export interface ICamraPageProps {}
 
 export default function CamraPage(props: ICamraPageProps) {
   const router = useRouter();
+  const [image, updateImage] = useLocalStorage("image", "");
 
   const vc = {
     width: 1280,
@@ -32,27 +32,34 @@ export default function CamraPage(props: ICamraPageProps) {
   const [isImageCaptured, setImageCaptured] = React.useState<boolean>(false);
   const webcamRef = React.useRef<Webcam>(null);
 
-  const capture = React.useCallback(() => {
+  const capture = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
+    console.log(imageSrc);
     if (imageSrc) {
       setImageSrc(imageSrc);
+      updateImage(imageSrc);
       setImageCaptured(true);
     }
-    console.log(imageSrc);
-  }, [webcamRef]);
+  };
 
-  const reset = React.useCallback(() => {
+  const reset = () => {
     setImageSrc(null);
     setImageCaptured(false);
-  }, []);
+  };
 
-  const switchCamera = React.useCallback(() => {
+  const switchCamera = () => {
     setVideoConstraints({
       ...videoConstraints,
       facingMode:
         videoConstraints.facingMode === "user" ? "environment" : "user",
     });
-  }, [videoConstraints]);
+  };
+
+  const acceptImage = async () => {
+    if (image) {
+      router.push("/lab/chat");
+    }
+  };
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
@@ -94,10 +101,10 @@ export default function CamraPage(props: ICamraPageProps) {
             </Button>
           )}
         </div>
-        <div className="p-2 flex flex-col justify-center">
+        <div className="p-0 flex flex-col justify-center">
           <Button
             variant="ghost"
-            className="py-20 px-10 rounded-full"
+            className="py-10 px-0 rounded-full"
             disabled={!isCaptureEnable && !isImageCaptured}
             onClick={capture}
           >
@@ -107,7 +114,11 @@ export default function CamraPage(props: ICamraPageProps) {
         </div>
         <div className="p-2 flex flex-col justify-center">
           {isImageCaptured ? (
-            <Button variant="ghost" className="py-7 rounded-full">
+            <Button
+              onClick={acceptImage}
+              variant="ghost"
+              className="py-7 rounded-full"
+            >
               <CheckIcon className="w-6 h-6" />
             </Button>
           ) : (
@@ -124,3 +135,20 @@ export default function CamraPage(props: ICamraPageProps) {
     </div>
   );
 }
+
+const base64ToBlob = (base64: string, contentType: string = ""): Blob => {
+  const byteCharacters = atob(base64);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  return new Blob(byteArrays, { type: contentType });
+};

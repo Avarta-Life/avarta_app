@@ -1,5 +1,8 @@
+"use client";
+
 import LabBackground from "@/components/background/LabBackground";
 import { Button } from "@/components/ui/button";
+import { ImageProvider } from "@/context/ImageContext";
 import { CameraIcon, ChevronsDownIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,9 +35,9 @@ export default function Lab(props: ILabProps) {
             Scan things to let me help you recycle it or make better use of it.
           </div>
           <ChevronsDownIcon className="my-5 w-10 h-10 animate-bounce" />
-          <Button variant="default" className="w-full p-2" asChild>
+          <Button variant="default" className="w-full p-2 py-8" asChild>
             <Link href="/lab/camera">
-              <CameraIcon />
+              <CameraIcon className="w-8 h-8" />
             </Link>
           </Button>
         </div>

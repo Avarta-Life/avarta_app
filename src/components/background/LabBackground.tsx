@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 export interface ILabBackgroundProps {
-  topLeftLeaf: boolean;
-  topRightLeaf: boolean;
+  topLeftLeaf?: boolean;
+  topRightLeaf?: boolean;
 }
 
 export default function LabBackground({
