@@ -58,6 +58,7 @@ export default function ChatPage(props: IChatPageProps) {
     if (sessionToken && image) {
       (async () => {
         try {
+          setIsLoading(true);
           const res = await handleUpload(image, sessionToken, ax);
 
           let genaiData = res.genai;
@@ -78,6 +79,8 @@ export default function ChatPage(props: IChatPageProps) {
           console.log(res);
         } catch (error) {
           console.error(error);
+        } finally {
+          setIsLoading(false);
         }
       })();
     }
