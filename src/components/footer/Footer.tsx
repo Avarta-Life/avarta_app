@@ -1,3 +1,4 @@
+import Link from "next/link";
 import * as React from "react";
 
 export interface IFooterProps {}
@@ -8,6 +9,7 @@ export default function Footer(props: IFooterProps) {
       <div className="max-w-7xl mx-auto">
         <div className="w-full flex justify-between px-2 py-4">
           <div>&copy; 2024 Avarta</div>
+          <Link href="/web/privacy">Privacy Policy</Link>
           <div>Made with ❤️</div>
         </div>
       </div>
