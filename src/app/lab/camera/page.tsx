@@ -97,12 +97,12 @@ export default function CamraPage(props: ICamraPageProps) {
         <div className="p-2 flex flex-col justify-center">
           <Button
             variant="ghost"
-            className="py-9 rounded-full"
+            className="py-20 px-10 rounded-full"
             disabled={!isCaptureEnable && !isImageCaptured}
             onClick={capture}
           >
             {/* <CircleIcon className="w-6 h-6" /> */}
-            <CircleIcon className="w-10 h-10 font-light" />
+            <CircleIcon className="w-20 h-20 font-light text-primary" />
           </Button>
         </div>
         <div className="p-2 flex flex-col justify-center">
