@@ -96,7 +96,7 @@ export default function Team(props: ITeamProps) {
 const team = [
   {
     title: "PN Chandra Ramu",
-    desig: "Founder and CEO",
+    desig: "Founder, CEO & GenAI Head",
     email: "savinaykumar@outlook.com",
     linkedin: "http://www.linkedin.com/in/chandraai/",
     image: "/assets/team/chandra.png",
@@ -124,21 +124,21 @@ const team = [
   },
   {
     title: "Abhishek Kesare",
-    desig: "Lead LLM Ops",
+    desig: "Lead Platform & ML/LLMOps Engineer",
     email: "abhikesare9@gmail.com",
     linkedin: "http://Linkedin.com/in/abhishek-kesare",
     image: "/assets/team/abhishek.png",
   },
   {
     title: "Shri Balagayatri",
-    desig: "Lead AI Scientist",
+    desig: "Lead GenAI Scientist",
     email: "sribalagayatri@gmail.com",
     linkedin: "http://www.linkedin.com/in/sshribala",
     image: "/assets/team/shribala.png",
   },
   {
     title: "Dhanushri R",
-    desig: "AI Scientist & Backend Dev",
+    desig: "GenAI Scientist & Backend Dev",
     email: "dhanushri19112001@gmail.com",
     linkedin: "http://www.linkedin.com/in/dhanu19",
     image: "/assets/team/dhanushri.png",
