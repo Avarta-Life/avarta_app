@@ -19,6 +19,20 @@ export interface ICamraPageProps {}
 export default function CamraPage(props: ICamraPageProps) {
   const router = useRouter();
   const [image, updateImage] = useLocalStorage("image", "");
+  const [location, updateLocation] = useLocalStorage("location", "");
+
+  const onCameraAccess = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        updateLocation(`${latitude},${longitude}`);
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
 
   const vc = {
     width: 1280,
@@ -34,7 +48,7 @@ export default function CamraPage(props: ICamraPageProps) {
 
   const capture = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
-    console.log(imageSrc);
+    // console.log(imageSrc);
     if (imageSrc) {
       setImageSrc(imageSrc);
       updateImage(imageSrc);
@@ -72,6 +86,7 @@ export default function CamraPage(props: ICamraPageProps) {
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
+            onUserMedia={() => onCameraAccess()}
           />
         ) : (
           imageSrc && (

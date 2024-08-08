@@ -8,7 +8,7 @@ export interface IUserChatBubbleProps {
 export default function UserChatBubble(props: IUserChatBubbleProps) {
   return (
     <div className="w-full p-2 flex justify-end">
-      <div className="text-gray-800 bg-gray-300 font-medium p-2 rounded-s-2xl rounded-tr-2xl rounded-br-sm ">
+      <div className="text-gray-800 bg-gray-300 font-medium p-2 px-4 rounded-s-2xl rounded-tr-2xl rounded-br-sm ">
         {props.typing || !props.children ? (
           <div className="flex items-center">
             ⌨️ Typing...

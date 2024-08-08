@@ -1,4 +1,5 @@
 import * as React from "react";
+import TypeIt from "typeit-react";
 
 export interface IServerChatBubbleProps {
   thinking?: boolean;
@@ -8,7 +9,7 @@ export interface IServerChatBubbleProps {
 export default function ServerChatBubble(props: IServerChatBubbleProps) {
   return (
     <div className="w-full py-2 flex justify-start">
-      <div className="text-white bg-primary font-medium p-2 px-4 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-sm">
+      <div className="text-white bg-primary max-w-[70%] p-2 px-4 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-sm">
         {props.thinking || !props.children ? (
           <div className="flex items-center">
             💭 Thinking
@@ -19,7 +20,9 @@ export default function ServerChatBubble(props: IServerChatBubbleProps) {
             </div>
           </div>
         ) : (
-          props.children
+          <TypeIt options={{ cursor: false, lifeLike: true, speed: 50 }}>
+            {props.children}
+          </TypeIt>
         )}
       </div>
     </div>

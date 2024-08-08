@@ -5,7 +5,7 @@ import LabBackground from "@/components/background/LabBackground";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import React from "react";
 import Image from "next/image";
-import { RotateCcw, RotateCcwIcon, SendIcon } from "lucide-react";
+import { RotateCcw, RotateCcwIcon, SendIcon, TagIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,10 @@ import ServerChatBubble from "@/components/chat-bubble/ServerChatBubble";
 import UserChatBubble from "@/components/chat-bubble/UserCharBubble";
 
 import axios, { Axios } from "axios";
+import { cn } from "@/lib/utils";
+import TypeIt from "typeit-react";
+import ItemDescription from "./ItemDescription";
+import { fetchNearbyPlaces } from "@/lib/places";
 const ax = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
@@ -35,20 +39,29 @@ export default function ChatPage(props: IChatPageProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isTyping, setIsTyping] = React.useState(false);
 
-  const [itemsInImage, setItemsInImage] = React.useState<any[]>([]);
+  const [messages, setMessages] = React.useState<
+    { sender: string; message: string }[]
+  >([]);
+
+  const [itemsInImage, setItemsInImage] = React.useState<{
+    [key: string]: any;
+  }>({});
   const [selectedItem, setSelectedItem] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    console.log("itemsInImage", itemsInImage);
+    console.log("selectedItem", selectedItem);
+  }, [itemsInImage, selectedItem]);
 
   React.useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
         const res = await ax.post("/token", {});
         console.log(res.data);
         setSessionToken(res.data.access_token);
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +82,9 @@ export default function ChatPage(props: IChatPageProps) {
               genaiData = JSON.parse(genaiData);
 
               if (Array.isArray(genaiData)) {
-                setItemsInImage(genaiData);
+                const uniqueObject =
+                  removeDuplicatesAndConvertToObject(genaiData);
+                setItemsInImage(uniqueObject);
               }
             }
           } catch (error) {
@@ -84,7 +99,8 @@ export default function ChatPage(props: IChatPageProps) {
         }
       })();
     }
-  }, [sessionToken, image]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image]);
 
   const handleTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -104,11 +120,37 @@ export default function ChatPage(props: IChatPageProps) {
 
   React.useEffect(() => {
     scrollToBottom();
-  }, [image, message, isLoading, isTyping]);
+  }, [image, message, messages, isLoading, isTyping]);
 
   const sendMessage = () => {
     if (message) {
+      const newMessage = {
+        sender: "user",
+        message,
+      };
+
+      setMessages([...messages, newMessage]);
       setMessage("");
+
+      (async () => {
+        try {
+          setIsLoading(true);
+          const res = await sendMessageReceiveResponse(
+            message,
+            ax,
+            sessionToken
+          );
+          setMessages([
+            ...messages,
+            newMessage,
+            { sender: "server", message: res },
+          ]);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      })();
     }
   };
 
@@ -132,7 +174,7 @@ export default function ChatPage(props: IChatPageProps) {
         </div>
         <div
           ref={chat}
-          className="flex-grow flex-basis-0 p-4 overflow-hidden flex flex-col"
+          className="flex-grow flex-basis-0 p-4 overflow-auto flex flex-col"
         >
           <div className="w-full flex flex-col">
             {/* Image preview */}
@@ -157,9 +199,22 @@ export default function ChatPage(props: IChatPageProps) {
               </>
             )}
             {/* Chat history */}
-            {itemsInImage.map((item: any, index: number) => (
-              <p key={index}>{item.Item}</p>
-            ))}
+            <ItemDescription
+              itemsInImage={itemsInImage}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+              axiosClient={ax}
+            />
+
+            {messages.map((message, index) =>
+              message.sender === "server" ? (
+                <ServerChatBubble key={index}>
+                  {message.message}
+                </ServerChatBubble>
+              ) : (
+                <UserChatBubble key={index}> {message.message} </UserChatBubble>
+              )
+            )}
             {isLoading && <ServerChatBubble thinking />}
             {isTyping && <UserChatBubble typing />}
           </div>
@@ -167,13 +222,13 @@ export default function ChatPage(props: IChatPageProps) {
         <div className="flex px-4 py-4 w-full border-t">
           <div className="flex w-full items-center space-x-2 border-none">
             <Input
-              disabled={!image}
+              disabled={isLoading}
               value={message}
               onChange={(e) => handleTyping(e)}
               type="message"
               placeholder="Ask me something"
             />
-            <Button disabled={!image} type="submit">
+            <Button onClick={sendMessage} disabled={isLoading} type="submit">
               <SendIcon />
             </Button>
           </div>
@@ -227,4 +282,62 @@ const handleUpload = async (
     console.error("Error uploading file:", error);
   }
   return null;
+};
+
+const removeDuplicatesAndConvertToObject = (arr: any[]) => {
+  const uniqueObject: { [key: string]: any } = {};
+
+  for (let i = 0; i < arr.length; i++) {
+    const itemName = arr[i].Item;
+    if (uniqueObject.hasOwnProperty(itemName)) {
+      uniqueObject[itemName] = {
+        ...uniqueObject[itemName],
+        Category: uniqueObject[itemName].Category.concat(arr[i].Category),
+      };
+    } else {
+      uniqueObject[itemName];
+      uniqueObject[itemName] = {
+        ...arr[i],
+        Category: [arr[i].Category],
+      };
+    }
+  }
+  console.log("uniqueObject", uniqueObject);
+  return uniqueObject;
+};
+
+const sendMessageReceiveResponse = async (
+  message: string,
+  client: Axios,
+  token: string
+) => {
+  const response = await client.post(
+    "/query",
+    {
+      query: message,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    }
+  );
+
+  let genaiData = response.data;
+
+  try {
+    if (typeof genaiData === "string") {
+      genaiData = JSON.parse(genaiData);
+
+      if (Array.isArray(genaiData)) {
+        genaiData = genaiData[0].response;
+      }
+    }
+  } catch (error) {
+    console.log("error", error);
+    return "Sorry, I didn't understand. Please try again.";
+  }
+
+  return genaiData;
 };
