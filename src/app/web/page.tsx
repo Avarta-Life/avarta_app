@@ -3,6 +3,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+import './Page.css'; 
 
 export interface IHomeProps {}
 
@@ -10,52 +11,13 @@ export default function Home(props: IHomeProps) {
   return (
     <div className="w-full">
       {/* HeroSlider */}
-      <div className=" mx-auto flex justify-center">
-        <div className="relative bg-white w-full max-h-[7000px] min-h-[500px] h-[70vh]">
-          <div className="absolute w-full h-full">
-            <HeroSlider />
-          </div>
-          <div className="absolute z-10 w-full h-full bg-green-800 bg-opacity-30 flex flex-col">
-            <div className="flex flex-1 w-full justify-center items-center">
-              <div className="w-full text-center">
-                <h1
-                  className={cn(
-                    "text-5xl lg:text-6xl text-white font-semibold leading-[5rem] p-2"
-                  )}
-                >
-                  Start{" "}
-                  <span
-                    className={cn(
-                      "bg-white text-primary text-4xl lg:text-6xl px-4 py-2 font-semibold rounded-md "
-                    )}
-                  >
-                    RECYCLING
-                  </span>{" "}
-                  Today
-                </h1>
-                <div className="flex justify-center pt-10 gap-4">
-                  <Link href="/download">
-                    <Image
-                      src="/assets/common/google-play.png"
-                      alt="Logo"
-                      width={200}
-                      height={70}
-                    />
-                  </Link>
-                  <Link href="/download">
-                    <Image
-                      src="/assets/common/app-store.png"
-                      alt="Logo"
-                      width={200}
-                      height={70}
-                    />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="video-container">
+        <video autoPlay muted loop>
+          <source src="/assets/video/avartahero.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
+      
       {/* End HeroSlider */}
       <div className="max-w-7xl mx-auto flex justify-center flex-col pt-10">
         <h1 className="text-6xl text-center font-semibold leading-[5rem] p-2 mt-10">
