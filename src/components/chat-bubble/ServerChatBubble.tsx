@@ -20,7 +20,7 @@ export default function ServerChatBubble(props: IServerChatBubbleProps) {
             </div>
           </div>
         ) : (
-          <TypeIt options={{ cursor: false, lifeLike: true, speed: 50 }}>
+          <TypeIt options={{ cursor: false, lifeLike: true, speed: 100 }}>
             {props.children}
           </TypeIt>
         )}

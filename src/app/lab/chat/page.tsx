@@ -47,6 +47,7 @@ export default function ChatPage(props: IChatPageProps) {
     [key: string]: any;
   }>({});
   const [selectedItem, setSelectedItem] = React.useState<any>(null);
+  const [videos, setVideos] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     console.log("itemsInImage", itemsInImage);
@@ -54,51 +55,52 @@ export default function ChatPage(props: IChatPageProps) {
   }, [itemsInImage, selectedItem]);
 
   React.useEffect(() => {
+    let token = null;
     (async () => {
       try {
+        setIsLoading(true);
         const res = await ax.post("/token", {});
         console.log(res.data);
-        setSessionToken(res.data.access_token);
+        token = res.data.access_token;
+        setSessionToken(token);
       } catch (error) {
         console.error(error);
       } finally {
+        setIsLoading(false);
       }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [image]);
 
-  React.useEffect(() => {
-    if (sessionToken && image) {
-      (async () => {
+      try {
+        setIsLoading(true);
+        const resp = await handleUpload(image, token, ax);
+
+        let genaiData = resp.genai;
+
         try {
-          setIsLoading(true);
-          const res = await handleUpload(image, sessionToken, ax);
+          // if genaiData is a string, parse it
+          if (typeof genaiData === "string") {
+            genaiData = JSON.parse(genaiData);
 
-          let genaiData = res.genai;
-
-          try {
-            // if genaiData is a string, parse it
-            if (typeof genaiData === "string") {
-              genaiData = JSON.parse(genaiData);
-
-              if (Array.isArray(genaiData)) {
-                const uniqueObject =
-                  removeDuplicatesAndConvertToObject(genaiData);
-                setItemsInImage(uniqueObject);
-              }
+            if (Array.isArray(genaiData)) {
+              const uniqueObject =
+                removeDuplicatesAndConvertToObject(genaiData);
+              setItemsInImage(uniqueObject);
             }
-          } catch (error) {
-            console.error(error);
           }
-
-          console.log(res);
+          console.log("genaiData.vedio", resp.vedio);
+          if (Object.keys(resp).includes("vedio")) {
+            setVideos(resp.vedio);
+          }
         } catch (error) {
           console.error(error);
-        } finally {
-          setIsLoading(false);
         }
-      })();
-    }
+
+        console.log(resp);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image]);
 
@@ -204,6 +206,7 @@ export default function ChatPage(props: IChatPageProps) {
               selectedItem={selectedItem}
               setSelectedItem={setSelectedItem}
               axiosClient={ax}
+              videos={videos}
             />
 
             {messages.map((message, index) =>
@@ -318,6 +321,7 @@ const sendMessageReceiveResponse = async (
     },
     {
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
         token: token,
       },

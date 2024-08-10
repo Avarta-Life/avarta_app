@@ -11,13 +11,14 @@ import Link from "next/link";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { fetchNearbyPlaces, PlaceResult } from "@/lib/places";
 import GooogleMapsMarkerWindow from "@/components/maps/GoogleMapMarkerWindow";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import VideoSwiper from "@/components/swiper/VideoSwiper";
 
 export interface IItemDescriptionProps {
   itemsInImage: any;
   selectedItem: any;
   setSelectedItem: any;
   axiosClient: Axios;
+  videos: any[];
 }
 
 export default function ItemDescription({
@@ -25,6 +26,7 @@ export default function ItemDescription({
   selectedItem,
   setSelectedItem,
   axiosClient,
+  videos,
 }: IItemDescriptionProps) {
   const [location, _] = useLocalStorage("location", "");
   const [nearbyDumpingLocations, setNearbyDumpingLocations] = React.useState<
@@ -33,6 +35,14 @@ export default function ItemDescription({
   const [nearbyNGOs, setNearbyNGOs] = React.useState<PlaceResult[]>([]);
 
   const [isLoading, setIsLoading] = React.useState(false);
+  // const [relatedVideos, setRelatedVideos] = React.useState<any[]>([
+  //   {
+  //     Title: "Some video with very long name that should be truncated",
+  //     Description: "Some description",
+  //     URL: "https://www.youtube.com/watch?v=abracadabra",
+  //     Thumbnail_URL: "https://i.ytimg.com/vi/abracadabra/hqdefault.jpg",
+  //   },
+  // ]);
 
   React.useEffect(() => {
     if (location && selectedItem && nearbyDumpingLocations.length === 0) {
@@ -82,8 +92,8 @@ export default function ItemDescription({
               )}
               onClick={() => {
                 setSelectedItem(item);
-                setIsRecycling(false);
-                setIsReusing(false);
+                // setIsRecycling(false);
+                // setIsReusing(false);
               }}
               key={index}
             >
@@ -102,8 +112,8 @@ export default function ItemDescription({
         <div className="py-2">
           {(() => {
             if (
-              (selectedItem.Category as string[]).includes("Recyclable") &&
-              (selectedItem.Category as string[]).includes("Reusable") &&
+              (selectedItem.Category as string[]).includes("Recyclable") ||
+              (selectedItem.Category as string[]).includes("Reusable") ||
               (selectedItem.Category as string[]).includes(
                 "Recyclable and Reusable"
               )
@@ -147,8 +157,8 @@ export default function ItemDescription({
                     ) && (
                       <div
                         onClick={() => {
-                          setIsRecycling(true);
-                          setIsReusing(false);
+                          // setIsRecycling(true);
+                          // setIsReusing(false);
                         }}
                         className="flex-grow flex w-full py-6 px-2 bg-gray-700 rounded-2xl text-gray-100 font-light text-xl justify-center items-center border-4 border-gray-500 hover:bg-gray-600 cursor-pointer"
                       >
@@ -169,8 +179,8 @@ export default function ItemDescription({
                     ) && (
                       <div
                         onClick={() => {
-                          setIsReusing(true);
-                          setIsRecycling(false);
+                          // setIsReusing(true);
+                          // setIsRecycling(false);
                         }}
                         className="flex-grow flex w-full py-6 px-2 bg-green-700 rounded-2xl text-gray-100 font-light text-xl justify-center items-center border-4 border-green-500 hover:bg-green-600 cursor-pointer"
                       >
@@ -207,13 +217,21 @@ export default function ItemDescription({
           {/* Related Videos */}
           <div>
             <p className="text-red-950 text-xl py-3">Related Videos:</p>
-            <ScrollArea className="w-full"></ScrollArea>
+            <VideoSwiper
+              height={300}
+              videos={videos.map((video) => ({
+                title: video.Title,
+                url: video.URL,
+                thumbnail: video.Thumbnail_URL,
+                description: video.Description,
+              }))}
+            />
           </div>
           {/* Nearby NGOs amd Recycling Locations */}
           {(() => {
             if (
-              (selectedItem.Category as string[]).includes("Recyclable") &&
-              (selectedItem.Category as string[]).includes("Reusable") &&
+              (selectedItem.Category as string[]).includes("Recyclable") ||
+              (selectedItem.Category as string[]).includes("Reusable") ||
               (selectedItem.Category as string[]).includes(
                 "Recyclable and Reusable"
               )
@@ -251,7 +269,9 @@ export default function ItemDescription({
             } else {
               return (
                 <>
-                  <p className="text-red-950 text-xl py-3">Neaby NGOs</p>
+                  <p className="text-red-950 text-xl py-3">
+                    Nearby Dumping Locations:
+                  </p>
                   <div>
                     {nearbyDumpingLocations.length !== 0 && (
                       <GooogleMapsMarkerWindow
@@ -260,7 +280,9 @@ export default function ItemDescription({
                     )}
                   </div>
                   {nearbyDumpingLocations.length === 0 && !isLoading ? (
-                    <ServerChatBubble>Sorry, no NGOs found.</ServerChatBubble>
+                    <ServerChatBubble>
+                      Sorry, no Dumping locations found.
+                    </ServerChatBubble>
                   ) : (
                     nearbyDumpingLocations
                       .filter((loc) => loc)
