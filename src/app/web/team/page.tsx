@@ -122,7 +122,7 @@ const team = [
     title: "Suhas M G",
     desig: "AI Scientist & Creative Head",
     email: "suhasmg98@gmail.com",
-    linkedin: "http://www.linkedin.com/in/sshribala",
+    linkedin: "https://www.linkedin.com/in/suhas-ghatti-4b39561a1/",
     image: "/assets/team/suhas.png",
   },
   {
@@ -157,7 +157,7 @@ const team = [
     title: "Pavan Yidapalapati",
     desig: "Gen AI Scientist",
     email: "pvsy11@gmail.com",
-    linkedin: "https://whttp://www.linkedin.com/in/pavanAI",
+    linkedin: "https://www.linkedin.com/in/pavanAI/",
     image: "/assets/team/pavan-genai.jpg",
   },
 
@@ -165,14 +165,14 @@ const team = [
     title: "Pavan Rayabagi",
     desig: "Frontend & DevOps Engineer",
     email: "pavanrayabagi1@gmail.com",
-    linkedin: "www.linkedin.com/in/pavan731",
+    linkedin: "https://www.linkedin.com/in/pavan731/",
     image: "/assets/team/pavan-rayabagi.png",
   },
   {
     title: "Sejal Kaul",
     desig: "Full Stack Developer",
     email: "sejals.kaul@gmail.com",
-    linkedin: "www.linkedin.com/in/sejal-kaul-441b41270",
+    linkedin: "https://www.linkedin.com/in/sejal-kaul-441b41270/",
     image: "/assets/team/sejal.png",
   },
   {
@@ -183,17 +183,17 @@ const team = [
     image: "/assets/team/nithin.png",
   },
   {
-    title: "Samruddha",
+    title: "Samraddha",
     desig: "Asst. Project Manager",
     email: "samraddha@volvo.com",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/sam1506/",
     image: "/assets/team/sammrudha.png",
   },
   {
     title: "Mohan Sai",
     desig: "Developer & AI Scientist",
     email: "suryacharandiv143@gmail.com",
-    linkedin: "http://www.linkedin.com/in/chandraai",
+    linkedin: "https://www.linkedin.com/in/mohan-sai-k-a078b6232/",
     image: "/assets/team/mohan.png",
   },
 ];
