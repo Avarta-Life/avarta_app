@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { fetchNearbyPlaces, PlaceResult } from "@/lib/places";
 import GooogleMapsMarkerWindow from "@/components/maps/GoogleMapMarkerWindow";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export interface IItemDescriptionProps {
   itemsInImage: any;
@@ -25,13 +26,11 @@ export default function ItemDescription({
   setSelectedItem,
   axiosClient,
 }: IItemDescriptionProps) {
-  const [isRecycling, setIsRecycling] = React.useState(false);
-  const [isReusing, setIsReusing] = React.useState(false);
-  const [isNonRecyclable, setIsNonRecyclable] = React.useState(false);
   const [location, _] = useLocalStorage("location", "");
   const [nearbyDumpingLocations, setNearbyDumpingLocations] = React.useState<
     PlaceResult[]
   >([]);
+  const [nearbyNGOs, setNearbyNGOs] = React.useState<PlaceResult[]>([]);
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -50,6 +49,22 @@ export default function ItemDescription({
         }
       })();
     }
+
+    if (location && selectedItem && nearbyNGOs.length === 0) {
+      (async () => {
+        try {
+          setIsLoading(true);
+          const res = await fetchNearbyNGOs(location);
+          setNearbyNGOs(res);
+          console.log("nearbyNGOs", res);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      })();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, selectedItem]);
 
@@ -116,44 +131,12 @@ export default function ItemDescription({
                   <div className="w-full py-6 px-2 bg-red-700 rounded-2xl text-gray-100 font-light text-xl text-center border-4 border-red-500">
                     🙁 Sorry! You cannot RECYCLE or REUSE it.
                   </div>
-
-                  <p className="text-red-950 text-xl py-3">
-                    Neaby Dumping Locations
-                  </p>
-                  <div>
-                    {nearbyDumpingLocations.length !== 0 && (
-                      <GooogleMapsMarkerWindow
-                        markers={nearbyDumpingLocations}
-                      />
-                    )}
-                  </div>
-                  {nearbyDumpingLocations.length === 0 && !isLoading ? (
-                    <ServerChatBubble>
-                      Sorry, no dumping locations found.
-                    </ServerChatBubble>
-                  ) : (
-                    nearbyDumpingLocations
-                      .filter((loc) => loc)
-                      .map((dumpingLocation: PlaceResult) => (
-                        <Button
-                          key={dumpingLocation.place_id}
-                          className="w-full text-lg mt-5 py-7 border-4 border-slate-600 bg-slate-700 hover:bg-slate-500"
-                          asChild
-                        >
-                          <Link
-                            href={`https://www.google.com/maps/place/?q=place_id:${dumpingLocation.place_id}`}
-                            target="_blank"
-                          >
-                            {dumpingLocation.name}
-                          </Link>
-                        </Button>
-                      ))
-                  )}
                 </>
               );
             }
           })()}
 
+          {/* Recycle and Reuse buttons */}
           <div className="flex items-center flex-nowrap space-x-2 py-2">
             {(() => {
               if (selectedItem.Material) {
@@ -207,42 +190,99 @@ export default function ItemDescription({
             })()}
           </div>
 
-          {isRecycling && (
-            <>
-              <ServerChatBubble>
-                Here are the steps for <strong>Recycling</strong>
-              </ServerChatBubble>
-              {(async () => {
-                const dumpingLocations = await fetchNeabyDumpingLocations(
-                  location
-                );
+          {/* Recycling and Reusing */}
+          <div>
+            <h2 className="text-red-950 text-xl py-3">
+              Envirnomental Impact:{" "}
+            </h2>
+            <p className="text-gray-500">
+              {selectedItem["Environmental impact"]}
+            </p>
+            <h2 className="text-red-950 text-xl py-3">Innovative methods: </h2>
+            <p className="text-gray-500">
+              {selectedItem["Innovative methods"]}
+            </p>
+          </div>
 
-                return (
-                  <div className="flex flex-col gap-y-2">
-                    {dumpingLocations.map((location, index) => (
-                      <div
-                        key={index}
-                        className="w-full py-6 px-2 bg-gray-700 rounded-2xl text-gray-100 font-light text-xl text-center border-4 border-gray-500"
-                      >
-                        <Link
-                          href={`https://www.google.com/maps/search/?api=1&query=${location.location.lat},${location.location.lng}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {location.name}
-                        </Link>
-                      </div>
-                    ))}
+          {/* Related Videos */}
+          <div>
+            <p className="text-red-950 text-xl py-3">Related Videos:</p>
+            <ScrollArea className="w-full"></ScrollArea>
+          </div>
+          {/* Nearby NGOs amd Recycling Locations */}
+          {(() => {
+            if (
+              (selectedItem.Category as string[]).includes("Recyclable") &&
+              (selectedItem.Category as string[]).includes("Reusable") &&
+              (selectedItem.Category as string[]).includes(
+                "Recyclable and Reusable"
+              )
+            ) {
+              return (
+                <>
+                  <p className="text-red-950 text-xl py-3">Neaby NGOs</p>
+                  <div>
+                    {nearbyNGOs.length !== 0 && (
+                      <GooogleMapsMarkerWindow markers={nearbyNGOs} />
+                    )}
                   </div>
-                );
-              })()}
-            </>
-          )}
-          {isReusing && (
-            <ServerChatBubble>
-              Here are the steps for <strong>Reusing</strong>
-            </ServerChatBubble>
-          )}
+                  {nearbyNGOs.length === 0 && !isLoading ? (
+                    <ServerChatBubble>Sorry, no NGOs found.</ServerChatBubble>
+                  ) : (
+                    nearbyNGOs
+                      .filter((loc) => loc)
+                      .map((dumpingLocation: PlaceResult) => (
+                        <Button
+                          key={dumpingLocation.place_id}
+                          className="w-full text-lg mt-5 py-7 border-4 border-slate-600 bg-slate-700 hover:bg-slate-500 overflow-hidden"
+                          asChild
+                        >
+                          <Link
+                            href={`https://www.google.com/maps/place/?q=place_id:${dumpingLocation.place_id}`}
+                            target="_blank"
+                          >
+                            {dumpingLocation.name}
+                          </Link>
+                        </Button>
+                      ))
+                  )}
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <p className="text-red-950 text-xl py-3">Neaby NGOs</p>
+                  <div>
+                    {nearbyDumpingLocations.length !== 0 && (
+                      <GooogleMapsMarkerWindow
+                        markers={nearbyDumpingLocations}
+                      />
+                    )}
+                  </div>
+                  {nearbyDumpingLocations.length === 0 && !isLoading ? (
+                    <ServerChatBubble>Sorry, no NGOs found.</ServerChatBubble>
+                  ) : (
+                    nearbyDumpingLocations
+                      .filter((loc) => loc)
+                      .map((dumpingLocation: PlaceResult) => (
+                        <Button
+                          key={dumpingLocation.place_id}
+                          className="w-full text-lg mt-5 py-7 border-4 border-slate-600 bg-slate-700 hover:bg-slate-500 overflow-hidden"
+                          asChild
+                        >
+                          <Link
+                            href={`https://www.google.com/maps/place/?q=place_id:${dumpingLocation.place_id}`}
+                            target="_blank"
+                          >
+                            {dumpingLocation.name}
+                          </Link>
+                        </Button>
+                      ))
+                  )}
+                </>
+              );
+            }
+          })()}
         </div>
       )}
     </>
@@ -263,6 +303,24 @@ const fetchNeabyDumpingLocations = async (location: string) => {
     return response;
   } catch (error) {
     console.error("Error fetching nearby dumping locations:", error);
+    return [];
+  }
+};
+
+const fetchNearbyNGOs = async (location: string) => {
+  try {
+    const response = await fetchNearbyPlaces({
+      query: "NGOs",
+      location: {
+        lat: parseFloat(location.split(",")[0]),
+        lng: parseFloat(location.split(",")[1]),
+      },
+      radius: 10000,
+      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching nearby NGOs:", error);
     return [];
   }
 };
