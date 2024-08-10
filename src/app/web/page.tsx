@@ -3,7 +3,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import './Page.css'; 
+// import './page.css';
 
 export interface IHomeProps {}
 
@@ -17,7 +17,7 @@ export default function Home(props: IHomeProps) {
           Your browser does not support the video tag.
         </video>
       </div>
-      
+
       {/* End HeroSlider */}
       <div className="max-w-7xl mx-auto flex justify-center flex-col pt-10">
         <h1 className="text-6xl text-center font-semibold leading-[5rem] p-2 mt-10">
