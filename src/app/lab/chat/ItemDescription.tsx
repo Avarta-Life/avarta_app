@@ -119,7 +119,7 @@ export default function ItemDescription({
               )
             )
               return (
-                <div className="w-full py-6 px-2 bg-blue-700 rounded-2xl text-gray-100 font-light text-xl text-center border-4 border-blue-500">
+                <div className="w-full py-6 px-2 bg-blue-700 rounded-2xl text-gray-100 font-light text-md text-center border-4 border-blue-500">
                   😀 Yay! You can RECYCLE or REUSE it.
                 </div>
               );

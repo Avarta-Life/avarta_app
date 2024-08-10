@@ -40,7 +40,7 @@ export default function VideoSwiper(props: IVideoSwiperProps) {
                 src={video.thumbnail}
                 alt={video.title}
               />
-              <p className=" bg-gray-100 text-sm h-[5rem] p-2 py-4 leading-6 text-ellipsis overflow-hidden">
+              <p className=" bg-gray-100 text-sm h-[6rem] p-2 py-4 leading-6 text-ellipsis overflow-hidden">
                 {video.title.length > 50
                   ? `${video.title.slice(0, 50)}...`
                   : video.title}
