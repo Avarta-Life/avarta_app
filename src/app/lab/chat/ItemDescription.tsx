@@ -332,7 +332,7 @@ const fetchNeabyDumpingLocations = async (location: string) => {
 const fetchNearbyNGOs = async (location: string) => {
   try {
     const response = await fetchNearbyPlaces({
-      query: "NGOs",
+      query: "Environmental NGOs",
       location: {
         lat: parseFloat(location.split(",")[0]),
         lng: parseFloat(location.split(",")[1]),
