@@ -140,7 +140,7 @@ const team = [
     image: "/assets/team/shribala.png",
   },
   {
-    title: "Dhanushri R",
+    title: "Dhanushri M",
     desig: "GenAI Scientist & Backend Dev",
     email: "dhanushri19112001@gmail.com",
     linkedin: "http://www.linkedin.com/in/dhanu19",
@@ -183,14 +183,14 @@ const team = [
     image: "/assets/team/nithin.png",
   },
   {
-    title: "Samraddha",
+    title: "Samraddha M S ",
     desig: "Asst. Project Manager",
     email: "samraddha@volvo.com",
     linkedin: "https://www.linkedin.com/in/sam1506/",
     image: "/assets/team/sammrudha.png",
   },
   {
-    title: "Mohan Sai",
+    title: "Mohan Sai K",
     desig: "Developer & AI Scientist",
     email: "suryacharandiv143@gmail.com",
     linkedin: "https://www.linkedin.com/in/mohan-sai-k-a078b6232/",
