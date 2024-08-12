@@ -106,7 +106,7 @@ const team = [
   },
   {
     title: "Rahul Ramesh",
-    desig: "Co-Founder & Brand Head",
+    desig: "Co-Founder, Brand Head & GenAI Arch",
     email: "rahulgautama97@gmail.com",
     linkedin: "http://www.linkedin.com/in/rahul-ramesh97",
     image: "/assets/team/rahul.png",
@@ -177,7 +177,7 @@ const team = [
   },
   {
     title: "Nithin P S",
-    desig: "Graphic Designer & Video Editor",
+    desig: "MGD, VFX & Video Editor",
     email: "nithinps620@gmail.com",
     linkedin: "http://www.linkedin.com/in/nithinps620",
     image: "/assets/team/nithin.png",
