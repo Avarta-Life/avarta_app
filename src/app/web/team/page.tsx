@@ -133,7 +133,7 @@ const team = [
     image: "/assets/team/abhishek.png",
   },
   {
-    title: "Shri Balagayatri",
+    title: "S.Shribala",
     desig: "Lead GenAI Scientist",
     email: "sribalagayatri@gmail.com",
     linkedin: "http://www.linkedin.com/in/sshribala",
