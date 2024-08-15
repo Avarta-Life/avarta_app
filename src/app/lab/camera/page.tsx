@@ -45,7 +45,8 @@ export default function CamraPage(props: ICamraPageProps) {
           () => {
             setHasAccess(false);
             resolve(false);
-          }
+          },
+          { enableHighAccuracy: true }
         );
       } else {
         console.log("Geolocation is not supported by this browser.");
