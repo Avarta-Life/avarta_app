@@ -32,24 +32,27 @@ export default function CamraPage(props: ICamraPageProps) {
   const [hasAccess, setHasAccess] = useState(true);
   const [showLocationError, setShowLocationError] = useState(false);
 
-  const onCameraAccess = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          updateLocation(`${latitude},${longitude}`);
-          setHasAccess(true);
-        },
-        () => setHasAccess(false)
-        // {
-        //   enableHighAccuracy: true,
-        // }
-      );
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-      setHasAccess(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getLocation = (): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            updateLocation(`${latitude},${longitude}`);
+            setHasAccess(true);
+            resolve(true);
+          },
+          () => {
+            setHasAccess(false);
+            resolve(false);
+          }
+        );
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+        setHasAccess(false);
+        resolve(false);
+      }
+    });
   };
 
   const vc = {
@@ -88,6 +91,8 @@ export default function CamraPage(props: ICamraPageProps) {
   };
 
   const acceptImage = async () => {
+    await getLocation();
+
     if (image) {
       router.push("/lab/chat");
     }
@@ -104,7 +109,6 @@ export default function CamraPage(props: ICamraPageProps) {
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
-            onUserMedia={() => onCameraAccess()}
           />
         ) : (
           imageSrc && (
