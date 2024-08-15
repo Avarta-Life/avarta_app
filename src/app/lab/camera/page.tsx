@@ -9,26 +9,46 @@ import {
   XIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import Webcam from "react-webcam";
 import { ImageContext } from "@/context/ImageContext";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export interface ICamraPageProps {}
 
 export default function CamraPage(props: ICamraPageProps) {
   const router = useRouter();
   const [image, updateImage] = useLocalStorage("image", "");
+  const [location, updateLocation] = useLocalStorage("location", "");
+  const [hasAccess, setHasAccess] = useState(true);
+  const [showLocationError, setShowLocationError] = useState(false);
 
   const onCameraAccess = () => {
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     const { latitude, longitude } = position.coords;
-    //     updateLocation(`${latitude},${longitude}`);
-    //   });
-    // } else {
-    //   console.log("Geolocation is not supported by this browser.");
-    // }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          updateLocation(`${latitude},${longitude}`);
+          setHasAccess(true);
+        },
+        () => setHasAccess(false)
+        // {
+        //   enableHighAccuracy: true,
+        // }
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+      setHasAccess(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
@@ -145,6 +165,32 @@ export default function CamraPage(props: ICamraPageProps) {
           )}
         </div>
       </div>
+      <Dialog
+        open={showLocationError}
+        onOpenChange={() => setShowLocationError(false)}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share link</DialogTitle>
+            <DialogDescription>
+              Location permission not provided.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center space-x-2">
+            <h2>
+              We cannot provide you nearby NGO and Dumping Locations because you
+              have denied permission.
+            </h2>
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="ghost">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -22,36 +22,6 @@ import { useEffect, useState } from "react";
 export interface ILabProps {}
 
 export default function Lab(props: ILabProps) {
-  const [location, updateLocation] = useLocalStorage("location", "");
-  const [hasAccess, setHasAccess] = useState(true);
-  const [showLocationError, setShowLocationError] = useState(false);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          updateLocation(`${latitude},${longitude}`);
-          setHasAccess(true);
-        },
-        () => setHasAccess(false),
-        {
-          enableHighAccuracy: true,
-        }
-      );
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-      setHasAccess(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!hasAccess) {
-      setShowLocationError(true);
-    }
-  }, [hasAccess]);
-
   return (
     <>
       <LabBackground topLeftLeaf topRightLeaf />
@@ -84,32 +54,6 @@ export default function Lab(props: ILabProps) {
           </Button>
         </div>
       </div>
-      <Dialog
-        open={showLocationError}
-        onOpenChange={() => setShowLocationError(false)}
-      >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Share link</DialogTitle>
-            <DialogDescription>
-              Location permission not provided.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center space-x-2">
-            <h2>
-              We cannot provide you nearby NGO and Dumping Locations because you
-              have denied permission.
-            </h2>
-          </div>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
