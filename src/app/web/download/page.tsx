@@ -33,7 +33,7 @@ export default function Download(props: IDownloadProps) {
           Start <br />
           Recycling <br /> Today
         </h1>
-        <div className="flex justify-center pt-10 gap-4">
+        <div className="flex justify-center pt-10 gap-4 min-h-[50vh] items-center">
           <Link href="/download">
             <Image
               src="/assets/common/google-play.png"

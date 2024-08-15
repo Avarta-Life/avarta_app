@@ -256,7 +256,8 @@ export default function ItemDescription({
                           asChild
                         >
                           <Link
-                            href={`https://www.google.com/maps/place/?q=place_id:${dumpingLocation.place_id}`}
+                            href={`https://www.google.com/maps/search/?api=1&query=${dumpingLocation.location.lat}%2C${dumpingLocation.location.lng}&query_place_id=${dumpingLocation.place_id}`}
+                            // href={`https://www.google.com/maps/place/?q=place_id:${dumpingLocation.place_id}`}
                             target="_blank"
                           >
                             {dumpingLocation.name}

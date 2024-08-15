@@ -19,18 +19,16 @@ export interface ICamraPageProps {}
 export default function CamraPage(props: ICamraPageProps) {
   const router = useRouter();
   const [image, updateImage] = useLocalStorage("image", "");
-  const [location, updateLocation] = useLocalStorage("location", "");
 
   const onCameraAccess = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        updateLocation(`${latitude},${longitude}`);
-      });
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-    }
-
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     const { latitude, longitude } = position.coords;
+    //     updateLocation(`${latitude},${longitude}`);
+    //   });
+    // } else {
+    //   console.log("Geolocation is not supported by this browser.");
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
